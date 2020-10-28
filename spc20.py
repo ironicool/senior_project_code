@@ -109,14 +109,14 @@ plt.show()
 
 from galpy.orbit import Orbit
 
-mas_yr = (60**2 * 1000) * u.deg / u.yr
+mas_yr = 1e-3 * u.arcsec / u.yr
 
-RA = 229.018#*u.deg
-Dec = -0.124#*u.deg
-Dist = (20.9 + (23.2-20.9)/2)#*u.kpc
-mu_ra = -2.296#*mas_yr
-mu_dec = -2.257#*mas_yr
-v_Pal = -58.7#*km_s
+RA = 229.018*u.deg
+Dec = -0.124*u.deg
+Dist = (20.9 + (23.2-20.9)/2)*u.kpc
+mu_ra = -2.296*mas_yr
+mu_dec = -2.257*mas_yr
+v_Pal = -58.7*km_s
 
 init_cond = [RA, Dec, Dist, mu_ra, mu_dec, v_Pal]
 
@@ -124,6 +124,16 @@ V_sun_r = -11.1#*km_s
 V_sun_phi = 251.3#*km_s
 V_sun_z = 7.3#*km_s
 
-V_sun = [V_sun_r, V_sun_phi, V_sun_z]
+#V_sun = [V_sun_r, V_sun_phi, V_sun_z]
 
-Palomar = Orbit(init_cond, solarmotion=V_sun)
+Palomar = Orbit(init_cond, radec=True)
+
+ts= np.linspace(0.,300.,1001)
+
+'''
+Palomar.integrate(ts, Standard)
+Palomar.plot3d(alpha=0.4)
+plt.xlim(-100.,100.)
+plt.ylim(-100.,100)
+plt.show()
+'''
