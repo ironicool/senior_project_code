@@ -74,7 +74,7 @@ vc_halo_Smal = vi0_halo_Smal * np.sqrt(r_sun**2 + r_h**2) / r_sun # amp of Log p
 
 ###########################
 
-# Instantiating Potentials
+# Initializing Potentials
 
 bulge_pot = HernquistPotential(amp=2*mass_bulge, a=c)
 disk_pot = MiyamotoNagaiPotential(amp=G*mass_disk, a=a, b=b)
@@ -105,25 +105,25 @@ plt.show()
 
 ###########################
 
-# Instantiating orbits of Palomar
+# Initializing orbit of Palomar
 
 from galpy.orbit import Orbit
 
 mas_yr = (60**2 * 1000) * u.deg / u.yr
 
-RA = 229.018*u.deg
-Dec = -0.124*u.deg
-Dist = (20.9 + (23.2-20.9)/2)*u.kpc
-mu_ra = -2.296*mas_yr
-mu_dec = -2.257*mas_yr
-v_Pal = -58.7*km_s
+RA = 229.018#*u.deg
+Dec = -0.124#*u.deg
+Dist = (20.9 + (23.2-20.9)/2)#*u.kpc
+mu_ra = -2.296#*mas_yr
+mu_dec = -2.257#*mas_yr
+v_Pal = -58.7#*km_s
 
 init_cond = [RA, Dec, Dist, mu_ra, mu_dec, v_Pal]
 
-V_sun_r = -11.1*km_s
-V_sun_phi = 251.3*km_s
-v_sun_z = 7.3*km_s
+V_sun_r = -11.1#*km_s
+V_sun_phi = 251.3#*km_s
+V_sun_z = 7.3#*km_s
 
-V_sun = [V_sun_r, V_sun_phi, v_sun_z]
+V_sun = [V_sun_r, V_sun_phi, V_sun_z]
 
 Palomar = Orbit(init_cond, solarmotion=V_sun)
