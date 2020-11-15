@@ -88,9 +88,63 @@ Massive = bulge_pot + disk_pot + Mass_halo_pot
 Smal_halo_pot = LogarithmicHaloPotential(amp=vc_halo_Smal**2, core=r_h)
 Small = bulge_pot + disk_pot + Smal_halo_pot
 
+no_Halo = bulge_pot + disk_pot
+
+###########################
+
+# Finding circular velocities due to potentials
+
+
+from galpy.potential import vcirc
+
+ov_Stan = vcirc(Standard, r_sun)
+ov_Mass = vcirc(Massive, r_sun)
+ov_Smal = vcirc(Small, r_sun)
+
+#print("Stan vel", ov_Stan, "upper error", vcirc(Standard, r_sun+dr_sun)-ov_Stan, "lower error", ov_Stan-vcirc(Standard, r_sun-dr_sun))
+#print("Mass vel", ov_Mass, "upper error", vcirc(Massive, r_sun+dr_sun)-ov_Mass, "lower error", ov_Mass-vcirc(Massive, r_sun-dr_sun))
+#print("Smal vel", ov_Smal, "upper error", vcirc(Small, r_sun+dr_sun)-ov_Smal, "lower error", ov_Smal-vcirc(Small, r_sun-dr_sun))
+#print("bulge", mass_bulge.to(u.solMass), "disk", mass_disk.to(u.solMass))
+#print("Stan vo", vc_halo_Stan.to(km_s), "Mass vo", vc_halo_Mass.to(km_s), "Smal vo", vc_halo_Smal.to(km_s))
+
+ov_nohalo = vcirc(no_Halo, r_sun)
+print("nohalo vel", ov_nohalo, "upper error", vcirc(no_Halo, r_sun+dr_sun)-ov_nohalo, "lower error", ov_nohalo-vcirc(no_Halo, r_sun-dr_sun))
+
 ###########################
 
 # Plotting Rotation Curves to compare with original paper
+
+from galpy.potential import plotRotcurve
+
+
+'''
+plotRotcurve(no_Halo)
+plt.title = "Rotation Curve of Bulge and Disk Potentials"
+plt.xlabel = r'$r\,(\mathrm{kpc})$'
+plt.ylabel = r"$v_c(R)\,(\mathrm{km\,s}^{-1})$"
+plt.xlim(0, 25)
+plt.ylim(100, 280)
+plt.grid()
+plt.show()
+'''
+'''
+plotRotcurve(bulge_pot)
+plt.xlabel = r'$r\,(\mathrm{kpc})$'
+plt.ylabel = r"$v_c(R)\,(\mathrm{km\,s}^{-1})$"
+plt.xlim(0, 25)
+plt.ylim(100, 280)
+plt.grid()
+plt.show()
+'''
+'''
+plotRotcurve(disk_pot)
+plt.xlabel = r'$r\,(\mathrm{kpc})$'
+plt.ylabel = r"$v_c(R)\,(\mathrm{km\,s}^{-1})$"
+plt.xlim(0, 25)
+plt.ylim(100, 280)
+plt.grid()
+plt.show()
+'''
 
 '''
 Stan_plot = plotRotcurve(Standard, overplot=True)
@@ -99,6 +153,8 @@ Smal_plot = plotRotcurve(Small, overplot=True)
 
 plt.xlim(0, 25)
 plt.ylim(100, 280)
+plt.xlabel = r'$r\,(\mathrm{kpc})$'
+plt.ylabel = r"$v_c(R)\,(\mathrm{km\,s}^{-1})$"
 plt.grid()
 plt.show()
 '''
@@ -106,7 +162,7 @@ plt.show()
 ###########################
 
 # Initializing orbit of Palomar
-
+'''
 from galpy.orbit import Orbit
 
 mas_yr = 1e-3 * u.arcsec / u.yr
@@ -130,10 +186,28 @@ Palomar = Orbit(init_cond, radec=True)
 
 ts= np.linspace(0.,300.,1001)
 
-'''
 Palomar.integrate(ts, Standard)
 Palomar.plot3d(alpha=0.4)
 plt.xlim(-100.,100.)
 plt.ylim(-100.,100)
 plt.show()
+'''
+
+###########################
+
+# Initializing Stream
+
+'''
+from galpy.df import streamdf
+from galpy.actionAngle import actionAngleIsochroneApprox
+
+rad_disp = 0.4*km_s
+
+aAI = actionAngleIsochroneApprox(b=20.9+(23.2-20.9)/2, pot=Standard, ro=r_sun, vo=V_sun_phi)
+sdf = streamdf(sigv=rad_disp, projenitor=Palomar, pot=Standard, aA=aAI, tdisrupt=5e9*u.yr)
+
+sdf.plotTrack(d1='ll',d2='dist',interp=True,color='k',spread=2,overplot=False,lw=2.)
+sdf.plotTrack(d1='ll',d2='dist',interp=False,color='k',spread=0,overplot=True,ls='none',marker='o')
+sdf.plotProgenitor(d1='ll',d2='dist',color='r',overplot=True,ls='--')
+xlim(155.,255.); ylim(7.5,14.8)
 '''
